@@ -3,51 +3,39 @@ import random
 from pygame import mixer
 
 mixer.init()
+click = 1
     
 def playSound(sound):
-    mixer.music.load(f"./Sounds/{sound}.mp3")
-    mixer.music.set_volume(2)
-    mixer.music.play()
-
-count = 0
-keys = []
-
+    if click == 1:
+        mixer.music.load(f"./Sounds/{sound}.mp3")
+        mixer.music.set_volume(1)
+        mixer.music.play()
 
 def on_press(key):
-    global keys, count
-
-    keys.append(key)
-    count+=1
-
-    if count >= 1:
-        count = 0
-        write_file(keys)
-        keys = []
-
-
-def write_file(keys):
-    for key in keys:
-        k=str(key).replace("'","")
-        if k.find("backspace") > 0:
-            playSound("delete")
-        elif k.find("enter") > 0:
-            playSound("enter")
-        elif k.find("shift") > 0:
-            playSound("space")
-        elif k.find("space") > 0:
-            playSound("4")
-        elif k.find("caps_lock") >0 :
-            playSound(random.randint(1,6))
-        elif k.find("Key"):
-            playSound(random.randint(1,6))
+    k=str(key).replace("'","")
+    if k.find("backspace") > 0:
+        playSound("delete")
+    elif k.find("enter") > 0:
+        playSound("enter")
+    elif k.find("shift") > 0:
+        playSound("space")
+    elif k.find("space") > 0:
+        playSound("4")
+    elif k.find("caps_lock") >0 :
+        playSound(random.randint(1,6))
+    elif k.find("Key"):
+        playSound(random.randint(1,6))
 
 
 def on_release(key):
     global exit
+    global click
     if key == Key.esc:
         exit += 1
-        if exit == 2 :
+        if exit == 5:
             return False
+        if exit == 2:
+            click *= -1
     else:
         exit = 0
 
